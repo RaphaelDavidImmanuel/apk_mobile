@@ -35,7 +35,7 @@ class PesananPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/images/empty_booking.png",
+                      "assets/images/empty.png",
                       width: 220,
                     ),
                     const SizedBox(height: 25),

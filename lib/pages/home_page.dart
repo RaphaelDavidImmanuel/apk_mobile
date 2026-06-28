@@ -1,233 +1,442 @@
 import 'package:flutter/material.dart';
 
+import '../data/wisata_data.dart';
+import '../utils/formatter.dart';
+import 'detail_wisata_page.dart';
+import 'wisata_page.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  Widget kategori(IconData icon, String title) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 28,
-          backgroundColor: Colors.blue.shade100,
-          child: Icon(
-            icon,
-            color: Colors.blue,
-            size: 28,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
-  }
-
-  Widget destinasi(String gambar, String nama, String lokasi, String rating) {
-    return Container(
-      width: 190,
-      margin: const EdgeInsets.only(right: 15),
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(18),
-              ),
-              child: Image.asset(
-                gambar,
-                height: 120,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    nama,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.location_on,
-                        color: Colors.red,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(lokasi),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(rating),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("WisataGo"),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Selamat Datang 👋",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              "Temukan destinasi impianmu hari ini.",
-              style: TextStyle(
-                color: Colors.grey.shade700,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: Image.asset(
-                "assets/images/banner.jpg",
-                height: 180,
+      backgroundColor: const Color(0xffF5F7FA),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // ================= HEADER =================
+
+              Container(
                 width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Card(
-              color: Colors.blue.shade50,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: const ListTile(
-                leading: Icon(
-                  Icons.local_offer,
-                  color: Colors.blue,
-                  size: 35,
+                padding: const EdgeInsets.fromLTRB(
+                  20,
+                  20,
+                  20,
+                  30,
                 ),
-                title: Text(
-                  "Promo Hari Ini",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                decoration: const BoxDecoration(
+                  color: Color(0xff1565C0),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(35),
+                    bottomRight: Radius.circular(35),
                   ),
                 ),
-                subtitle: Text(
-                  "Diskon 20% untuk pembelian minimal 2 tiket.",
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Halo",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 18,
+                      ),
+                    ),
+
+                    const SizedBox(height: 5),
+
+                    const Text(
+                      "Selamat Datang",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 5),
+
+                    const Text(
+                      "Temukan destinasi wisata terbaik di Indonesia.",
+                      style: TextStyle(
+                        color: Colors.white,
+                        height: 1.4,
+                      ),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    // Banner
+
+                    Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: const BoxDecoration(
+                              color: Colors.white24,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.local_offer,
+                              color: Colors.white,
+                              size: 34,
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "PROMO SPESIAL",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Text(
+                                  "Diskon 20%\nMinimal pembelian 2 tiket",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    height: 1.4,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 25),
-            const Text(
-              "Kategori",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+
+              const SizedBox(height: 25),
+
+              // ================= KATEGORI =================
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      "Kategori Wisata",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                kategori(Icons.beach_access, "Pantai"),
-                kategori(Icons.landscape, "Gunung"),
-                kategori(Icons.park, "Taman"),
-                kategori(Icons.waves, "Laut"),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "Destinasi Populer",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "Lihat Semua",
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: 240,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
+
+              const SizedBox(height: 18),
+
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  destinasi(
-                    "assets/images/pangandaran.jpg",
-                    "Pantai Pangandaran",
-                    "Jawa Barat",
-                    "4.8",
+                  CategoryItem(
+                    icon: Icons.beach_access,
+                    title: "Pantai",
                   ),
-                  destinasi(
-                    "assets/images/kawah_putih.jpg",
-                    "Kawah Putih",
-                    "Bandung",
-                    "4.9",
+                  CategoryItem(
+                    icon: Icons.landscape,
+                    title: "Gunung",
                   ),
-                  destinasi(
-                    "assets/images/taman_safari.jpg",
-                    "Taman Safari",
-                    "Bogor",
-                    "4.8",
+                  CategoryItem(
+                    icon: Icons.pets,
+                    title: "Safari",
                   ),
-                  destinasi(
-                    "assets/images/raja_ampat.jpg",
-                    "Raja Ampat",
-                    "Papua Barat",
-                    "5.0",
+                  CategoryItem(
+                    icon: Icons.park,
+                    title: "Taman",
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 15),
-          ],
+
+              const SizedBox(height: 30),
+
+              // ================= WISATA POPULER =================
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Wisata Populer",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const WisataPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Lihat Semua",
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 320,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: daftarWisata.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 15),
+                  itemBuilder: (context, index) {
+                    final wisata = daftarWisata[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => DetailWisataPage(
+                              wisata: wisata,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 235,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(22),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.15),
+                              blurRadius: 12,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(22),
+                                    topRight: Radius.circular(22),
+                                  ),
+                                  child: Image.asset(
+                                    wisata.gambar,
+                                    height: 150,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 12,
+                                  left: 12,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 5,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Text(
+                                      "POPULER",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      wisata.nama,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.location_on,
+                                          size: 18,
+                                          color: Colors.red,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Expanded(
+                                          child: Text(
+                                            wisata.lokasi,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Spacer(),
+                                    const Row(
+                                      children: [
+                                        Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                          size: 18,
+                                        ),
+                                        SizedBox(width: 3),
+                                        Text(
+                                          "4.8",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          "(320)",
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      Formatter.formatRupiah(wisata.harga),
+                                      style: const TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.15),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.info,
+                      color: Colors.blue,
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        "Nikmati kemudahan pemesanan tiket wisata secara online melalui aplikasi WisataGo.",
+                        style: TextStyle(
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 30),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class CategoryItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+
+  const CategoryItem({
+    super.key,
+    required this.icon,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 65,
+          height: 65,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                blurRadius: 8,
+              ),
+            ],
+          ),
+          child: Icon(
+            icon,
+            color: Colors.blue,
+            size: 32,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -25,7 +25,20 @@ class _BookingPageState extends State<BookingPage> {
 
   int jumlahTiket = 1;
 
-  int get totalHarga => jumlahTiket * widget.wisata.harga;
+  int get subtotal {
+    return jumlahTiket * widget.wisata.harga;
+  }
+
+  int get diskon {
+    if (jumlahTiket >= 2) {
+      return (subtotal * 20 / 100).round();
+    }
+    return 0;
+  }
+
+  int get totalHarga {
+    return subtotal - diskon;
+  }
 
   Future<void> pilihTanggal() async {
     DateTime? picked = await showDatePicker(
@@ -324,20 +337,53 @@ class _BookingPageState extends State<BookingPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Divider(),
-                    infoRow(
-                      "Destinasi",
-                      widget.wisata.nama,
-                    ),
-                    infoRow(
-                      "Harga Tiket",
-                      formatRupiah(
-                        widget.wisata.harga,
+                    const SizedBox(height: 15),
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade50,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: Colors.orange,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.local_offer,
+                            color: Colors.orange,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              jumlahTiket >= 2
+                                  ? " Selamat! Promo 20% berhasil diterapkan."
+                                  : "Beli minimal 2 tiket untuk mendapatkan diskon 20%.",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    const Divider(),
                     infoRow(
-                      "Jumlah",
-                      "$jumlahTiket Tiket",
+                      "Harga / Tiket",
+                      formatRupiah(widget.wisata.harga),
+                    ),
+                    infoRow(
+                      "Jumlah Tiket",
+                      "$jumlahTiket",
+                    ),
+                    const Divider(),
+                    infoRow(
+                      "Subtotal",
+                      formatRupiah(subtotal),
+                    ),
+                    infoRow(
+                      "Diskon",
+                      jumlahTiket >= 2 ? "20% (-${formatRupiah(diskon)})" : "-",
                     ),
                     const Divider(),
                     infoRow(
