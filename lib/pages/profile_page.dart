@@ -166,19 +166,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
             ),
-            menuItem(
-              Icons.confirmation_num,
-              "Riwayat Pesanan",
-              () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      "Silakan buka tab Pesanan di bawah.",
-                    ),
-                  ),
-                );
-              },
-            ),
+
+            // menuItem(
+            //   Icons.confirmation_num,
+            //   "Riwayat Pesanan",
+            //   () {
+            //     ScaffoldMessenger.of(context).showSnackBar(
+            //       const SnackBar(
+            //         content: Text(
+            //           "Silakan buka tab Pesanan di bawah.",
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
+
             menuItem(
               Icons.info,
               "Tentang Aplikasi",

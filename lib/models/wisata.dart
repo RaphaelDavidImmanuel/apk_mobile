@@ -4,6 +4,7 @@ class Wisata {
   final String deskripsi;
   final int harga;
   final String gambar;
+  int stok;
 
   Wisata({
     required this.nama,
@@ -11,5 +12,6 @@ class Wisata {
     required this.deskripsi,
     required this.harga,
     required this.gambar,
+    required this.stok,
   });
 }

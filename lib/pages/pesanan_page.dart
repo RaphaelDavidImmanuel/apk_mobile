@@ -1,28 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../data/pemesanan_data.dart';
+import '../models/pemesanan.dart';
+import '../utils/formatter.dart';
+import 'eticket_page.dart';
 
 class PesananPage extends StatelessWidget {
   const PesananPage({super.key});
 
-  String formatRupiah(int angka) {
-    String hasil = angka.toString();
-
-    RegExp reg = RegExp(r'(\d+)(\d{3})');
-
-    while (reg.hasMatch(hasil)) {
-      hasil = hasil.replaceAllMapped(
-        reg,
-        (Match m) => "${m[1]}.${m[2]}",
-      );
-    }
-
-    return "Rp $hasil";
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         title: const Text("Riwayat Pesanan"),
         centerTitle: true,
@@ -30,7 +19,7 @@ class PesananPage extends StatelessWidget {
       body: daftarPemesanan.isEmpty
           ? Center(
               child: Padding(
-                padding: const EdgeInsets.all(25),
+                padding: const EdgeInsets.all(24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -52,6 +41,7 @@ class PesananPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.grey,
+                        height: 1.5,
                       ),
                     ),
                   ],
@@ -59,10 +49,11 @@ class PesananPage extends StatelessWidget {
               ),
             )
           : ListView.builder(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(16),
               itemCount: daftarPemesanan.length,
               itemBuilder: (context, index) {
-                final pesanan = daftarPemesanan[index];
+                final Pemesanan pesanan =
+                    daftarPemesanan[daftarPemesanan.length - 1 - index];
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 18),
@@ -73,16 +64,18 @@ class PesananPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(18),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            const CircleAvatar(
-                              radius: 28,
-                              backgroundColor: Colors.blue,
-                              child: Icon(
-                                Icons.place,
-                                color: Colors.white,
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(
+                                Icons.confirmation_num,
+                                color: Colors.blue,
                               ),
                             ),
                             const SizedBox(width: 15),
@@ -93,15 +86,23 @@ class PesananPage extends StatelessWidget {
                                   Text(
                                     pesanan.namaWisata,
                                     style: const TextStyle(
-                                      fontSize: 19,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 5),
                                   Text(
                                     pesanan.tanggal,
                                     style: const TextStyle(
                                       color: Colors.grey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  Text(
+                                    pesanan.waktuPesan,
+                                    style: TextStyle(
+                                      color: Colors.grey.shade600,
+                                      fontSize: 12,
                                     ),
                                   ),
                                 ],
@@ -113,58 +114,87 @@ class PesananPage extends StatelessWidget {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(
-                                  30,
-                                ),
+                                color: Colors.green.shade100,
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               child: const Text(
                                 "LUNAS",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                         const SizedBox(height: 20),
                         const Divider(),
+                        const SizedBox(height: 12),
                         infoRow(
-                          "Nama",
+                          "Nama Pemesan",
                           pesanan.namaPemesan,
                         ),
                         infoRow(
-                          "No HP",
+                          "Nomor HP",
                           pesanan.nomorHp,
                         ),
                         infoRow(
                           "Jumlah Tiket",
-                          "${pesanan.jumlah}",
+                          "${pesanan.jumlah} Tiket",
                         ),
                         infoRow(
-                          "Total Bayar",
-                          formatRupiah(
-                            pesanan.total,
+                          "Subtotal",
+                          Formatter.formatRupiah(
+                            pesanan.subtotal,
                           ),
                         ),
+                        infoRow(
+                          "Diskon",
+                          pesanan.diskon == 0
+                              ? "-"
+                              : "- ${Formatter.formatRupiah(pesanan.diskon)}",
+                          valueColor:
+                              pesanan.diskon == 0 ? Colors.black : Colors.green,
+                        ),
                         const Divider(),
-                        Row(
-                          children: const [
-                            Icon(
-                              Icons.check_circle,
-                              color: Colors.green,
+                        infoRow(
+                          "Total Bayar",
+                          Formatter.formatRupiah(
+                            pesanan.total,
+                          ),
+                          isTotal: true,
+                          valueColor: Colors.blue,
+                        ),
+                        const SizedBox(height: 18),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ETicketPage(
+                                    pesanan: pesanan,
+                                  ),
+                                ),
+                              );
+                            },
+                            // icon: const Icon(Icons.receipt_long),
+                            label: const Text(
+                              "Lihat E-Ticket",
                             ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Tiket Siap Digunakan",
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 14,
                               ),
-                            )
-                          ],
-                        )
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -174,26 +204,35 @@ class PesananPage extends StatelessWidget {
     );
   }
 
-  Widget infoRow(String title, String value) {
+  Widget infoRow(
+    String title,
+    String value, {
+    bool isTotal = false,
+    Color valueColor = Colors.black,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 5,
+        vertical: 6,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.grey,
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: isTotal ? 17 : 15,
+                fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,
+              ),
             ),
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
+              fontSize: isTotal ? 18 : 15,
               fontWeight: FontWeight.bold,
+              color: valueColor,
             ),
-          )
+          ),
         ],
       ),
     );
